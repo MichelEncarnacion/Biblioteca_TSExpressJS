@@ -1,4 +1,4 @@
-import { Usuario, Libro, Prestamo } from "./clases.ts";
+import { Usuario, Libro, Prestamo } from "./clases";
 import {
     IUsuario,
     ILibro,
@@ -12,7 +12,7 @@ import {
 
 
 //clase Biblioteca
-class Biblioteca {
+export class Biblioteca {
     //propiedades
     private nombreBiblioteca: string;
     private usuarios: Map<number, Usuario>;
@@ -168,7 +168,7 @@ class Biblioteca {
         // 3. Devolver el prestamo
         prestamo.realizarDevolucion();
         // 4. Actualizar el estado del libro y del usuario
-        prestamo.libro.devolverCopia();
+        (prestamo.libro as Libro).devolverCopia();
         prestamo.usuario.prestamosActivos--;
 
         // 5. Mensaje de confirmacion

@@ -16,17 +16,20 @@ export class Usuario implements IUsuario {
     private _nombre: string;
     private _email: string;
     tipo: TipoUsuario;
-
+    //inicializacion Fecha actual y prestamos en 0
+    fechaActual: Date = new Date();
+    prestamosActivos: number = 0;
+    fechaRegistro: Date;
     //constructor
     constructor(id: number, nombre: string, email: string, tipo: TipoUsuario) {
         this.id = id;
         this._nombre = nombre;
         this._email = email;
         this.tipo = tipo;
+        this.prestamosActivos = 0;
+        this.fechaRegistro = new Date();
     }
-    //inicializacion Fecha actual y prestamos en 0
-    fechaActual: Date = new Date();
-    prestamosActivos: number = 0;
+
 
     //getters y setter nombre
 
