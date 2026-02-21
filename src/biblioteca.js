@@ -139,26 +139,26 @@ var Biblioteca = /** @class */ (function () {
     Biblioteca.prototype.generarReporteLibrosMasPrestados = function (limite) {
         var _this = this;
         if (limite === void 0) { limite = 5; }
-        //Map para contar cuántas veces se prestó cada libro
+        // Map para contar cuántas veces se prestó cada libro (usaremos el ISBN como llave)
         var conteo = new Map();
-        //Frecuencia de prestamos 
+        // Frecuencia de prestamos 
         Array.from(this.prestamos.values()).forEach(function (prestamo) {
-            var tituloLibro = prestamo.libro.titulo;
-            var conteoActual = conteo.get(tituloLibro) || 0;
-            conteo.set(tituloLibro, conteoActual + 1);
+            var isbnLibro = prestamo.libro.ISBN; // 
+            var conteoActual = conteo.get(isbnLibro) || 0;
+            conteo.set(isbnLibro, conteoActual + 1); // 
         });
-        //ordenar por cantidad de préstamos descendente
+        // ordenar por cantidad de préstamos descendente
         var ordenados = Array.from(conteo.entries())
             .sort(function (a, b) { return b[1] - a[1]; })
             .slice(0, limite);
-        //Formatear el reporte
+        // Formatear el reporte
         var reporte = "\n REPORTE: Top ".concat(limite, " Libros M\u00E1s Prestados\n");
         reporte += "==========================================\n";
         if (ordenados.length === 0)
             return reporte + "No hay datos de préstamos aún.\n";
         ordenados.forEach(function (_a, index) {
             var isbn = _a[0], cantidad = _a[1];
-            var libro = _this.libros.get(isbn);
+            var libro = _this.libros.get(isbn); // Ahora sí buscará correctamente por ISBN
             reporte += "".concat(index + 1, ". [").concat(libro.categoria, "] ").concat(libro.titulo, " de ").concat(libro.autor, " - ").concat(cantidad, " pr\u00E9stamos\n");
         });
         return reporte;

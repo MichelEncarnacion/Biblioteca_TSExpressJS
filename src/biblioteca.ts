@@ -190,29 +190,29 @@ export class Biblioteca {
     //Metodo Reportes
 
     generarReporteLibrosMasPrestados(limite: number = 5): string {
-        //Map para contar cuántas veces se prestó cada libro
+        // Map para contar cuántas veces se prestó cada libro (usaremos el ISBN como llave)
         const conteo = new Map<string, number>();
 
-        //Frecuencia de prestamos 
+        // Frecuencia de prestamos 
         Array.from(this.prestamos.values()).forEach(prestamo => {
-            const tituloLibro = prestamo.libro.titulo;
-            const conteoActual = conteo.get(tituloLibro) || 0;
-            conteo.set(tituloLibro, conteoActual + 1);
+            const isbnLibro = prestamo.libro.ISBN; // 
+            const conteoActual = conteo.get(isbnLibro) || 0;
+            conteo.set(isbnLibro, conteoActual + 1); // 
         });
 
-        //ordenar por cantidad de préstamos descendente
+        // ordenar por cantidad de préstamos descendente
         const ordenados = Array.from(conteo.entries())
             .sort((a, b) => b[1] - a[1])
             .slice(0, limite);
 
-        //Formatear el reporte
+        // Formatear el reporte
         let reporte = `\n REPORTE: Top ${limite} Libros Más Prestados\n`;
         reporte += `==========================================\n`;
 
         if (ordenados.length === 0) return reporte + "No hay datos de préstamos aún.\n";
 
         ordenados.forEach(([isbn, cantidad], index) => {
-            const libro = this.libros.get(isbn)!;
+            const libro = this.libros.get(isbn)!; // Ahora sí buscará correctamente por ISBN
             reporte += `${index + 1}. [${libro.categoria}] ${libro.titulo} de ${libro.autor} - ${cantidad} préstamos\n`;
         });
 

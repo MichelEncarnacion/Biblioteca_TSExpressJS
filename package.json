@@ -1,14 +1,13 @@
 {
   "name": "libreria",
-  "type": "module",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ana Karen Camargo, Danna Muñoz, Michel Encarnacion",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^25.3.0",
