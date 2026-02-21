@@ -1,0 +1,373 @@
+{
+  "usuarios": [
+    [
+      1,
+      {
+        "fechaActual": "2026-02-21T20:23:02.418Z",
+        "prestamosActivos": 1,
+        "id": 1,
+        "_nombre": "Juan Pérez",
+        "_email": "juan.perez@tec.edu.mx",
+        "tipo": 0,
+        "fechaRegistro": "2026-02-21T20:18:45.729Z"
+      }
+    ],
+    [
+      2,
+      {
+        "fechaActual": "2026-02-21T20:23:02.421Z",
+        "prestamosActivos": 1,
+        "id": 2,
+        "_nombre": "María Gómez",
+        "_email": "maria.gomez@tec.edu.mx",
+        "tipo": 0,
+        "fechaRegistro": "2026-02-21T20:18:45.729Z"
+      }
+    ],
+    [
+      3,
+      {
+        "fechaActual": "2026-02-21T20:23:02.421Z",
+        "prestamosActivos": 0,
+        "id": 3,
+        "_nombre": "Dr. Alan Turing",
+        "_email": "alan.turing@tec.edu.mx",
+        "tipo": 1,
+        "fechaRegistro": "2026-02-21T20:18:45.730Z"
+      }
+    ],
+    [
+      4,
+      {
+        "fechaActual": "2026-02-21T20:23:02.421Z",
+        "prestamosActivos": 2,
+        "id": 4,
+        "_nombre": "Admin Root",
+        "_email": "admin@tec.edu.mx",
+        "tipo": 2,
+        "fechaRegistro": "2026-02-21T20:18:45.730Z"
+      }
+    ],
+    [
+      5,
+      {
+        "fechaActual": "2026-02-21T20:23:27.058Z",
+        "prestamosActivos": 0,
+        "id": 5,
+        "_nombre": "Juan Pérez",
+        "_email": "juan@tec.mx",
+        "tipo": 0,
+        "fechaRegistro": "2026-02-21T20:23:27.058Z"
+      }
+    ],
+    [
+      6,
+      {
+        "fechaActual": "2026-02-21T20:23:27.058Z",
+        "prestamosActivos": 0,
+        "id": 6,
+        "_nombre": "Dr. Alan Turing",
+        "_email": "alan@tec.mx",
+        "tipo": 1,
+        "fechaRegistro": "2026-02-21T20:23:27.058Z"
+      }
+    ],
+    [
+      7,
+      {
+        "fechaActual": "2026-02-21T20:24:50.478Z",
+        "prestamosActivos": 1,
+        "id": 7,
+        "_nombre": "Michel",
+        "_email": "mich@gmail.com",
+        "tipo": 0,
+        "fechaRegistro": "2026-02-21T20:24:50.478Z"
+      }
+    ]
+  ],
+  "libros": [
+    [
+      "978-0132350884",
+      {
+        "colaReservas": [],
+        "titulo": "Clean Code",
+        "autor": "Robert C. Martin",
+        "anioPublicacion": 2008,
+        "_copiasDisponibles": 5,
+        "copiasTotales": 5,
+        "estado": 0,
+        "ISBN": "978-0132350884",
+        "categoria": 4
+      }
+    ],
+    [
+      "978-0201616224",
+      {
+        "colaReservas": [],
+        "titulo": "The Pragmatic Programmer",
+        "autor": "Andrew Hunt",
+        "anioPublicacion": 1999,
+        "_copiasDisponibles": 3,
+        "copiasTotales": 4,
+        "estado": 0,
+        "ISBN": "978-0201616224",
+        "categoria": 4
+      }
+    ],
+    [
+      "978-0131103627",
+      {
+        "colaReservas": [],
+        "titulo": "The C Prog. Language",
+        "autor": "Brian Kernighan",
+        "anioPublicacion": 1988,
+        "_copiasDisponibles": 1,
+        "copiasTotales": 2,
+        "estado": 0,
+        "ISBN": "978-0131103627",
+        "categoria": 4
+      }
+    ],
+    [
+      "978-0134685991",
+      {
+        "colaReservas": [],
+        "titulo": "Effective Java",
+        "autor": "Joshua Bloch",
+        "anioPublicacion": 2017,
+        "_copiasDisponibles": 2,
+        "copiasTotales": 3,
+        "estado": 0,
+        "ISBN": "978-0134685991",
+        "categoria": 4
+      }
+    ],
+    [
+      "978-0135957059",
+      {
+        "colaReservas": [],
+        "titulo": "The Clean Coder",
+        "autor": "Robert C. Martin",
+        "anioPublicacion": 2011,
+        "_copiasDisponibles": 1,
+        "copiasTotales": 2,
+        "estado": 0,
+        "ISBN": "978-0135957059",
+        "categoria": 4
+      }
+    ]
+  ],
+  "prestamos": [
+    [
+      1,
+      {
+        "idPrestamo": 1,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "Clean Code",
+          "autor": "Robert C. Martin",
+          "anioPublicacion": 2008,
+          "_copiasDisponibles": 5,
+          "copiasTotales": 5,
+          "estado": 0,
+          "ISBN": "978-0132350884",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:23:02.418Z",
+          "prestamosActivos": 1,
+          "id": 1,
+          "_nombre": "Juan Pérez",
+          "_email": "juan.perez@tec.edu.mx",
+          "tipo": 0,
+          "fechaRegistro": "2026-02-21T20:18:45.729Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:18:45.736Z",
+        "fechaDevolucion": "2026-03-07T20:18:45.736Z",
+        "_estado": 1,
+        "fechaRealDevolucion": "2026-02-21T20:18:46.075Z"
+      }
+    ],
+    [
+      2,
+      {
+        "idPrestamo": 2,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "The Pragmatic Programmer",
+          "autor": "Andrew Hunt",
+          "anioPublicacion": 1999,
+          "_copiasDisponibles": 3,
+          "copiasTotales": 4,
+          "estado": 0,
+          "ISBN": "978-0201616224",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:23:02.421Z",
+          "prestamosActivos": 1,
+          "id": 2,
+          "_nombre": "María Gómez",
+          "_email": "maria.gomez@tec.edu.mx",
+          "tipo": 0,
+          "fechaRegistro": "2026-02-21T20:18:45.729Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:18:46.052Z",
+        "fechaDevolucion": "2026-03-07T20:18:46.052Z",
+        "_estado": 0,
+        "fechaRealDevolucion": "2026-02-21T20:18:46.052Z"
+      }
+    ],
+    [
+      3,
+      {
+        "idPrestamo": 3,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "The C Programming Language",
+          "autor": "Brian W. Kernighan",
+          "anioPublicacion": 1988,
+          "_copiasDisponibles": 1,
+          "copiasTotales": 2,
+          "estado": 1,
+          "ISBN": "978-0131103627",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:23:02.421Z",
+          "prestamosActivos": 0,
+          "id": 3,
+          "_nombre": "Dr. Alan Turing",
+          "_email": "alan.turing@tec.edu.mx",
+          "tipo": 1,
+          "fechaRegistro": "2026-02-21T20:18:45.730Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:18:46.053Z",
+        "fechaDevolucion": "2026-03-07T20:18:46.053Z",
+        "_estado": 1,
+        "fechaRealDevolucion": "2026-02-21T20:18:46.067Z"
+      }
+    ],
+    [
+      4,
+      {
+        "idPrestamo": 4,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "Effective Java",
+          "autor": "Joshua Bloch",
+          "anioPublicacion": 2017,
+          "_copiasDisponibles": 2,
+          "copiasTotales": 3,
+          "estado": 0,
+          "ISBN": "978-0134685991",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:23:02.421Z",
+          "prestamosActivos": 2,
+          "id": 4,
+          "_nombre": "Admin Root",
+          "_email": "admin@tec.edu.mx",
+          "tipo": 2,
+          "fechaRegistro": "2026-02-21T20:18:45.730Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:18:46.055Z",
+        "fechaDevolucion": "2026-03-07T20:18:46.055Z",
+        "_estado": 0,
+        "fechaRealDevolucion": "2026-02-21T20:18:46.055Z"
+      }
+    ],
+    [
+      5,
+      {
+        "idPrestamo": 5,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "The Clean Coder",
+          "autor": "Robert C. Martin",
+          "anioPublicacion": 2011,
+          "_copiasDisponibles": 1,
+          "copiasTotales": 2,
+          "estado": 0,
+          "ISBN": "978-0135957059",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:23:02.418Z",
+          "prestamosActivos": 1,
+          "id": 1,
+          "_nombre": "Juan Pérez",
+          "_email": "juan.perez@tec.edu.mx",
+          "tipo": 0,
+          "fechaRegistro": "2026-02-21T20:18:45.729Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:18:46.056Z",
+        "fechaDevolucion": "2026-03-07T20:18:46.056Z",
+        "_estado": 0,
+        "fechaRealDevolucion": "2026-02-21T20:18:46.056Z"
+      }
+    ],
+    [
+      6,
+      {
+        "idPrestamo": 6,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "The C Programming Language",
+          "autor": "Brian W. Kernighan",
+          "anioPublicacion": 1988,
+          "_copiasDisponibles": 1,
+          "copiasTotales": 2,
+          "estado": 1,
+          "ISBN": "978-0131103627",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:23:02.421Z",
+          "prestamosActivos": 2,
+          "id": 4,
+          "_nombre": "Admin Root",
+          "_email": "admin@tec.edu.mx",
+          "tipo": 2,
+          "fechaRegistro": "2026-02-21T20:18:45.730Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:18:46.057Z",
+        "fechaDevolucion": "2026-03-07T20:18:46.057Z",
+        "_estado": 0,
+        "fechaRealDevolucion": "2026-02-21T20:18:46.057Z"
+      }
+    ],
+    [
+      7,
+      {
+        "idPrestamo": 7,
+        "libro": {
+          "colaReservas": [],
+          "titulo": "The C Prog. Language",
+          "autor": "Brian Kernighan",
+          "anioPublicacion": 1988,
+          "_copiasDisponibles": 1,
+          "copiasTotales": 2,
+          "estado": 0,
+          "ISBN": "978-0131103627",
+          "categoria": 4
+        },
+        "usuario": {
+          "fechaActual": "2026-02-21T20:24:50.478Z",
+          "prestamosActivos": 1,
+          "id": 7,
+          "_nombre": "Michel",
+          "_email": "mich@gmail.com",
+          "tipo": 0,
+          "fechaRegistro": "2026-02-21T20:24:50.478Z"
+        },
+        "fechaPrestamo": "2026-02-21T20:25:44.032Z",
+        "fechaDevolucion": "2026-03-07T20:25:44.032Z",
+        "_estado": 0,
+        "fechaRealDevolucion": "2026-02-21T20:25:44.032Z"
+      }
+    ]
+  ],
+  "contadorPrestamos": 8
+}

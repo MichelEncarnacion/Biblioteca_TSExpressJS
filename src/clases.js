@@ -1,6 +1,21 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Prestamo = exports.Libro = exports.Usuario = void 0;
+exports.Revista = exports.Prestamo = exports.Libro = exports.Material = exports.Usuario = void 0;
 var interfaces_1 = require("./interfaces");
 //Clase Usuario
 var Usuario = /** @class */ (function () {
@@ -70,35 +85,29 @@ var Usuario = /** @class */ (function () {
     return Usuario;
 }());
 exports.Usuario = Usuario;
-//Clase Libro
-var Libro = /** @class */ (function () {
-    //contructor 
-    function Libro(ISBN, titulo, autor, categoria, anioPublicacion, copiasDisponibles, copiasTotales, estado) {
-        //Inicializacion de estado DISPONIBLE
-        this.estado = interfaces_1.EstadoLibro.Disponible;
-        this.ISBN = ISBN;
+//Clase Material
+var Material = /** @class */ (function () {
+    function Material(titulo, autor, anioPublicacion, copiasDisponibles, copiasTotales, estado) {
+        //  Arreglo para la fila de espera
+        this.colaReservas = [];
         this.titulo = titulo;
         this.autor = autor;
-        this.categoria = categoria;
         this.anioPublicacion = anioPublicacion;
         this._copiasDisponibles = copiasDisponibles;
         this.copiasTotales = copiasTotales;
         this.estado = estado;
     }
-    Object.defineProperty(Libro.prototype, "copiasDisponibles", {
-        //geter copiasDisponibles
+    Object.defineProperty(Material.prototype, "copiasDisponibles", {
         get: function () {
             return this._copiasDisponibles;
         },
         enumerable: false,
         configurable: true
     });
-    //metodo estaDisponible
-    Libro.prototype.estaDisponible = function () {
+    Material.prototype.estaDisponible = function () {
         return this._copiasDisponibles > 0 && this.estado === interfaces_1.EstadoLibro.Disponible;
     };
-    //metodo prestarCopia
-    Libro.prototype.prestarCopia = function () {
+    Material.prototype.prestarCopia = function () {
         if (this.estaDisponible()) {
             this._copiasDisponibles--;
             if (this._copiasDisponibles === 0) {
@@ -108,8 +117,7 @@ var Libro = /** @class */ (function () {
         }
         return false;
     };
-    //metodo devolverCopia
-    Libro.prototype.devolverCopia = function () {
+    Material.prototype.devolverCopia = function () {
         if (this._copiasDisponibles < this.copiasTotales) {
             this._copiasDisponibles++;
             if (this._copiasDisponibles === this.copiasTotales) {
@@ -119,12 +127,37 @@ var Libro = /** @class */ (function () {
         }
         return false;
     };
-    //metodo obtener Informacion
+    // Métodos para manejar la fila de espera
+    Material.prototype.agregarReserva = function (usuarioId) {
+        if (!this.colaReservas.includes(usuarioId)) {
+            this.colaReservas.push(usuarioId);
+        }
+        else {
+            throw new Error("El usuario ya tiene una reserva activa para este material.");
+        }
+    };
+    Material.prototype.obtenerSiguienteReserva = function () {
+        return this.colaReservas.shift(); // Saca y retorna el primer usuario de la fila
+    };
+    return Material;
+}());
+exports.Material = Material;
+//Clase Libro
+var Libro = /** @class */ (function (_super) {
+    __extends(Libro, _super);
+    function Libro(ISBN, titulo, autor, categoria, anioPublicacion, copiasDisponibles, copiasTotales, estado) {
+        // super() envía los datos comunes a la clase padre (Material)
+        var _this = _super.call(this, titulo, autor, anioPublicacion, copiasDisponibles, copiasTotales, estado) || this;
+        // Asignamos solo lo que es exclusivo de un Libro
+        _this.ISBN = ISBN;
+        _this.categoria = categoria;
+        return _this;
+    }
     Libro.prototype.obtenerInformacion = function () {
         return "ISBN: ".concat(this.ISBN, ", Titulo: ").concat(this.titulo, ", Autor: ").concat(this.autor, ", Categoria: ").concat(this.categoria, ", Anio Publicacion: ").concat(this.anioPublicacion, ", Copias Disponibles: ").concat(this._copiasDisponibles, ", Copias Totales: ").concat(this.copiasTotales, ", Estado: ").concat(this.estado);
     };
     return Libro;
-}());
+}(Material));
 exports.Libro = Libro;
 //Clase Prestamo
 var Prestamo = /** @class */ (function () {
@@ -196,3 +229,18 @@ var Prestamo = /** @class */ (function () {
     return Prestamo;
 }());
 exports.Prestamo = Prestamo;
+//Clase Revista
+var Revista = /** @class */ (function (_super) {
+    __extends(Revista, _super);
+    function Revista(ISSN, titulo, autor, numeroEdicion, anioPublicacion, copiasDisponibles, copiasTotales, estado) {
+        var _this = _super.call(this, titulo, autor, anioPublicacion, copiasDisponibles, copiasTotales, estado) || this;
+        _this.ISSN = ISSN;
+        _this.numeroEdicion = numeroEdicion;
+        return _this;
+    }
+    Revista.prototype.obtenerInformacion = function () {
+        return "ISSN: ".concat(this.ISSN, ", Titulo: ").concat(this.titulo, ", Autor: ").concat(this.autor, ", Edici\u00F3n: ").concat(this.numeroEdicion, ", Anio Publicacion: ").concat(this.anioPublicacion, ", Copias Disponibles: ").concat(this._copiasDisponibles, ", Copias Totales: ").concat(this.copiasTotales, ", Estado: ").concat(this.estado);
+    };
+    return Revista;
+}(Material));
+exports.Revista = Revista;

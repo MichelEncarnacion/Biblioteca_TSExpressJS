@@ -85,87 +85,93 @@ export class Usuario implements IUsuario {
 
 }
 
-//Clase Libro
-export class Libro implements ILibro {
-
-    //ISBN readonly
-    readonly ISBN: string;
-
-    // propiedades
+//Clase Material
+export abstract class Material {
     public titulo: string;
     public autor: string;
-    public categoria: CategoriaLibro;
     public anioPublicacion: number;
     public copiasTotales: number;
-    //Inicializacion de estado DISPONIBLE
-    public estado: EstadoLibro = EstadoLibro.Disponible;
+    public estado: EstadoLibro;
+    protected _copiasDisponibles: number;
 
-    //Propiedad Privada copiasDisponibles
-    //se usa el _ para indicar que es privada
-    private _copiasDisponibles: number;
+    //  Arreglo para la fila de espera
+    public colaReservas: number[] = [];
 
-
-    //contructor 
-    constructor(ISBN: string, titulo: string, autor: string, categoria: CategoriaLibro, anioPublicacion: number, copiasDisponibles: number, copiasTotales: number, estado: EstadoLibro) {
-        this.ISBN = ISBN;
+    constructor(titulo: string, autor: string, anioPublicacion: number, copiasDisponibles: number, copiasTotales: number, estado: EstadoLibro) {
         this.titulo = titulo;
         this.autor = autor;
-        this.categoria = categoria;
         this.anioPublicacion = anioPublicacion;
         this._copiasDisponibles = copiasDisponibles;
         this.copiasTotales = copiasTotales;
         this.estado = estado;
     }
 
-    //geter copiasDisponibles
-
     get copiasDisponibles(): number {
-        return this._copiasDisponibles
+        return this._copiasDisponibles;
     }
-
-    //metodo estaDisponible
 
     estaDisponible(): boolean {
-        return this._copiasDisponibles > 0 && this.estado === EstadoLibro.Disponible
+        return this._copiasDisponibles > 0 && this.estado === EstadoLibro.Disponible;
     }
-
-    //metodo prestarCopia
 
     prestarCopia(): boolean {
         if (this.estaDisponible()) {
-            this._copiasDisponibles--
+            this._copiasDisponibles--;
             if (this._copiasDisponibles === 0) {
-                this.estado = EstadoLibro.Prestado
+                this.estado = EstadoLibro.Prestado;
             }
-            return true
+            return true;
         }
-        return false
+        return false;
     }
-
-    //metodo devolverCopia
 
     devolverCopia(): boolean {
         if (this._copiasDisponibles < this.copiasTotales) {
-            this._copiasDisponibles++
+            this._copiasDisponibles++;
             if (this._copiasDisponibles === this.copiasTotales) {
-                this.estado = EstadoLibro.Disponible
+                this.estado = EstadoLibro.Disponible;
             }
-            return true
+            return true;
         }
-        return false
+        return false;
     }
 
-    //metodo obtener Informacion
+    // Métodos para manejar la fila de espera
+    agregarReserva(usuarioId: number): void {
+        if (!this.colaReservas.includes(usuarioId)) {
+            this.colaReservas.push(usuarioId);
+        } else {
+            throw new Error("El usuario ya tiene una reserva activa para este material.");
+        }
+    }
+
+    obtenerSiguienteReserva(): number | undefined {
+        return this.colaReservas.shift(); // Saca y retorna el primer usuario de la fila
+    }
+
+    abstract obtenerInformacion(): string;
+}
+
+//Clase Libro
+export class Libro extends Material implements ILibro {
+    readonly ISBN: string;
+    public categoria: CategoriaLibro;
+
+    constructor(ISBN: string, titulo: string, autor: string, categoria: CategoriaLibro, anioPublicacion: number, copiasDisponibles: number, copiasTotales: number, estado: EstadoLibro) {
+        // super() envía los datos comunes a la clase padre (Material)
+        super(titulo, autor, anioPublicacion, copiasDisponibles, copiasTotales, estado);
+
+        // Asignamos solo lo que es exclusivo de un Libro
+        this.ISBN = ISBN;
+        this.categoria = categoria;
+    }
 
     obtenerInformacion(): string {
-        return `ISBN: ${this.ISBN}, Titulo: ${this.titulo}, Autor: ${this.autor}, Categoria: ${this.categoria}, Anio Publicacion: ${this.anioPublicacion}, Copias Disponibles: ${this._copiasDisponibles}, Copias Totales: ${this.copiasTotales}, Estado: ${this.estado}`
+        return `ISBN: ${this.ISBN}, Titulo: ${this.titulo}, Autor: ${this.autor}, Categoria: ${this.categoria}, Anio Publicacion: ${this.anioPublicacion}, Copias Disponibles: ${this._copiasDisponibles}, Copias Totales: ${this.copiasTotales}, Estado: ${this.estado}`;
     }
-
-
 }
 
 //Clase Prestamo
-
 export class Prestamo implements IPrestamo {
     readonly idPrestamo: number;
     libro: ILibro;
@@ -251,4 +257,19 @@ export class Prestamo implements IPrestamo {
     }
 
 
+}
+//Clase Revista
+export class Revista extends Material {
+    readonly ISSN: string;
+    public numeroEdicion: number;
+
+    constructor(ISSN: string, titulo: string, autor: string, numeroEdicion: number, anioPublicacion: number, copiasDisponibles: number, copiasTotales: number, estado: EstadoLibro) {
+        super(titulo, autor, anioPublicacion, copiasDisponibles, copiasTotales, estado);
+        this.ISSN = ISSN;
+        this.numeroEdicion = numeroEdicion;
+    }
+
+    obtenerInformacion(): string {
+        return `ISSN: ${this.ISSN}, Titulo: ${this.titulo}, Autor: ${this.autor}, Edición: ${this.numeroEdicion}, Anio Publicacion: ${this.anioPublicacion}, Copias Disponibles: ${this._copiasDisponibles}, Copias Totales: ${this.copiasTotales}, Estado: ${this.estado}`;
+    }
 }

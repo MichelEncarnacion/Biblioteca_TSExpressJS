@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Usuario, Libro, Prestamo } from "./clases";
 import {
     IUsuario,
@@ -76,6 +77,34 @@ export class Biblioteca {
     obtenerLibro(ISBN: string): Libro | undefined {
         return this.libros.get(ISBN);
     }
+
+    //Metodo para reservar un libro
+    reservarLibro(idUsuario: number, ISBN: string): void {
+        const usuario = this.obtenerUsuario(idUsuario);
+        const libro = this.obtenerLibro(ISBN);
+
+        if (!usuario) {
+            console.error(`Error: No se encontró ningún usuario con ID ${idUsuario}.`);
+            return;
+        }
+        if (!libro) {
+            console.error(`Error: No se encontró ningún libro con ISBN ${ISBN}.`);
+            return;
+        }
+
+        if (libro.estaDisponible()) {
+            console.log(`ℹ El libro "${libro.titulo}" tiene copias disponibles. Puedes realizar el préstamo directamente.`);
+            return;
+        }
+
+        try {
+            libro.agregarReserva(idUsuario);
+            console.log(` Usuario "${usuario.nombre}" agregado a la lista de reservas de "${libro.titulo}". (Turno en fila: ${libro.colaReservas.length})`);
+        } catch (error: any) {
+            console.error(` Error de reserva: ${error.message}`);
+        }
+    }
+
 
     //buscarLibroPorCategoria
     //convertir el map en un array para poder filtrar
@@ -184,6 +213,18 @@ export class Biblioteca {
         //si la multa es mayor a 0, la mostramos
         if (multa > 0) {
             console.log(`Atención: Se aplicó una multa de $${multa} por ${prestamo.diasRetraso()} días de retraso.`);
+        }
+        //  Procesar fila de reservas al devolver ---
+        const libroDevuelto = prestamo.libro as Libro;
+        const siguienteUsuarioId = libroDevuelto.obtenerSiguienteReserva();
+
+        if (siguienteUsuarioId) {
+            const siguienteUsuario = this.obtenerUsuario(siguienteUsuarioId);
+            console.log(`\n ¡ATENCIÓN! El libro "${libroDevuelto.titulo}" estaba reservado.`);
+            console.log(`   Asignando préstamo automáticamente a ${siguienteUsuario?.nombre}...`);
+
+            // Reutilizamos el método realizarPrestamo para dárselo al que esperaba
+            this.realizarPrestamo(siguienteUsuarioId, libroDevuelto.ISBN);
         }
     }
 
@@ -324,6 +365,81 @@ export class Biblioteca {
         reporte += `========================================================================\n`;
 
         return reporte;
+    }
+
+    //  Persistencia de Datos 
+
+    guardarDatos(): void {
+        try {
+            const datos = {
+                usuarios: Array.from(this.usuarios.entries()),
+                libros: Array.from(this.libros.entries()),
+                prestamos: Array.from(this.prestamos.entries()),
+                contadorPrestamos: this.contadorPrestamos
+            };
+
+            // 1. Definimos la ruta de la carpeta y del archivo
+            const carpetaBd = './bd';
+            const rutaArchivo = `${carpetaBd}/biblioteca_datos.json`;
+
+            // 2. Verificamos si la carpeta "bd" existe. Si no, la creamos.
+            if (!fs.existsSync(carpetaBd)) {
+                fs.mkdirSync(carpetaBd);
+            }
+
+            // 3. Escribimos el archivo dentro de la carpeta
+            fs.writeFileSync(rutaArchivo, JSON.stringify(datos, null, 2), 'utf-8');
+            console.log(`\n ÉXITO: Los datos se han guardado en '${rutaArchivo}'`);
+        } catch (error) {
+            console.error(" Error al guardar los datos:", error);
+        }
+    }
+
+    cargarDatos(): void {
+        try {
+            const rutaArchivo = './bd/biblioteca_datos.json';
+
+            // Verificamos si el archivo existe en la nueva ruta
+            if (fs.existsSync(rutaArchivo)) {
+                const archivo = fs.readFileSync(rutaArchivo, 'utf-8');
+                const datos = JSON.parse(archivo);
+
+                this.usuarios.clear();
+                this.libros.clear();
+                this.prestamos.clear();
+
+                datos.usuarios.forEach(([id, u]: [number, any]) => {
+                    const usuario = new Usuario(u.id, u._nombre, u._email, u.tipo);
+                    usuario.prestamosActivos = u.prestamosActivos;
+                    usuario.fechaRegistro = new Date(u.fechaRegistro);
+                    this.usuarios.set(id, usuario);
+                });
+
+                datos.libros.forEach(([isbn, l]: [string, any]) => {
+                    const libro = new Libro(l.ISBN, l.titulo, l.autor, l.categoria, l.anioPublicacion, l._copiasDisponibles, l.copiasTotales, l.estado);
+                    libro.colaReservas = l.colaReservas || [];
+                    this.libros.set(isbn, libro);
+                });
+
+                datos.prestamos.forEach(([id, p]: [number, any]) => {
+                    const usuario = this.usuarios.get(p.usuario.id)!;
+                    const libro = this.libros.get(p.libro.ISBN)!;
+                    const prestamo = new Prestamo(p.idPrestamo, usuario, libro);
+                    prestamo.fechaPrestamo = new Date(p.fechaPrestamo);
+                    prestamo.fechaDevolucion = new Date(p.fechaDevolucion);
+                    prestamo.fechaRealDevolucion = new Date(p.fechaRealDevolucion);
+                    (prestamo as any)._estado = p._estado;
+                    this.prestamos.set(id, prestamo);
+                });
+
+                this.contadorPrestamos = datos.contadorPrestamos;
+                console.log(` ÉXITO: Datos cargados correctamente desde '${rutaArchivo}'\n`);
+            } else {
+                console.log(" No se encontró base de datos previa. Iniciando sistema en blanco.\n");
+            }
+        } catch (error) {
+            console.error(" Error al cargar los datos:", error);
+        }
     }
 
 }

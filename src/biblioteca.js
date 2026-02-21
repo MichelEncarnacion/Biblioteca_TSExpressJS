@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Biblioteca = void 0;
+var fs = require("fs");
 var clases_1 = require("./clases");
 var interfaces_1 = require("./interfaces");
 //clase Biblioteca
@@ -47,6 +48,30 @@ var Biblioteca = /** @class */ (function () {
     //obtenerLibro
     Biblioteca.prototype.obtenerLibro = function (ISBN) {
         return this.libros.get(ISBN);
+    };
+    //Metodo para reservar un libro
+    Biblioteca.prototype.reservarLibro = function (idUsuario, ISBN) {
+        var usuario = this.obtenerUsuario(idUsuario);
+        var libro = this.obtenerLibro(ISBN);
+        if (!usuario) {
+            console.error("Error: No se encontr\u00F3 ning\u00FAn usuario con ID ".concat(idUsuario, "."));
+            return;
+        }
+        if (!libro) {
+            console.error("Error: No se encontr\u00F3 ning\u00FAn libro con ISBN ".concat(ISBN, "."));
+            return;
+        }
+        if (libro.estaDisponible()) {
+            console.log("\u2139 El libro \"".concat(libro.titulo, "\" tiene copias disponibles. Puedes realizar el pr\u00E9stamo directamente."));
+            return;
+        }
+        try {
+            libro.agregarReserva(idUsuario);
+            console.log(" Usuario \"".concat(usuario.nombre, "\" agregado a la lista de reservas de \"").concat(libro.titulo, "\". (Turno en fila: ").concat(libro.colaReservas.length, ")"));
+        }
+        catch (error) {
+            console.error(" Error de reserva: ".concat(error.message));
+        }
     };
     //buscarLibroPorCategoria
     //convertir el map en un array para poder filtrar
@@ -134,6 +159,16 @@ var Biblioteca = /** @class */ (function () {
         if (multa > 0) {
             console.log("Atenci\u00F3n: Se aplic\u00F3 una multa de $".concat(multa, " por ").concat(prestamo.diasRetraso(), " d\u00EDas de retraso."));
         }
+        //  Procesar fila de reservas al devolver ---
+        var libroDevuelto = prestamo.libro;
+        var siguienteUsuarioId = libroDevuelto.obtenerSiguienteReserva();
+        if (siguienteUsuarioId) {
+            var siguienteUsuario = this.obtenerUsuario(siguienteUsuarioId);
+            console.log("\n \u00A1ATENCI\u00D3N! El libro \"".concat(libroDevuelto.titulo, "\" estaba reservado."));
+            console.log("   Asignando pr\u00E9stamo autom\u00E1ticamente a ".concat(siguienteUsuario === null || siguienteUsuario === void 0 ? void 0 : siguienteUsuario.nombre, "..."));
+            // Reutilizamos el método realizarPrestamo para dárselo al que esperaba
+            this.realizarPrestamo(siguienteUsuarioId, libroDevuelto.ISBN);
+        }
     };
     //Metodo Reportes
     Biblioteca.prototype.generarReporteLibrosMasPrestados = function (limite) {
@@ -158,7 +193,7 @@ var Biblioteca = /** @class */ (function () {
             return reporte + "No hay datos de préstamos aún.\n";
         ordenados.forEach(function (_a, index) {
             var isbn = _a[0], cantidad = _a[1];
-            var libro = _this.libros.get(isbn); // Ahora sí buscará correctamente por ISBN
+            var libro = _this.libros.get(isbn);
             reporte += "".concat(index + 1, ". [").concat(libro.categoria, "] ").concat(libro.titulo, " de ").concat(libro.autor, " - ").concat(cantidad, " pr\u00E9stamos\n");
         });
         return reporte;
@@ -254,6 +289,76 @@ var Biblioteca = /** @class */ (function () {
         reporte += "   \uD83D\uDCC9 Promedio de pr\u00E9stamos por usuario: ".concat(promedioPrestamos, "\n");
         reporte += "========================================================================\n";
         return reporte;
+    };
+    //  Persistencia de Datos 
+    Biblioteca.prototype.guardarDatos = function () {
+        try {
+            var datos = {
+                usuarios: Array.from(this.usuarios.entries()),
+                libros: Array.from(this.libros.entries()),
+                prestamos: Array.from(this.prestamos.entries()),
+                contadorPrestamos: this.contadorPrestamos
+            };
+            // 1. Definimos la ruta de la carpeta y del archivo
+            var carpetaBd = './bd';
+            var rutaArchivo = "".concat(carpetaBd, "/biblioteca_datos.json");
+            // 2. Verificamos si la carpeta "bd" existe. Si no, la creamos.
+            if (!fs.existsSync(carpetaBd)) {
+                fs.mkdirSync(carpetaBd);
+            }
+            // 3. Escribimos el archivo dentro de la carpeta
+            fs.writeFileSync(rutaArchivo, JSON.stringify(datos, null, 2), 'utf-8');
+            console.log("\n \u00C9XITO: Los datos se han guardado en '".concat(rutaArchivo, "'"));
+        }
+        catch (error) {
+            console.error(" Error al guardar los datos:", error);
+        }
+    };
+    Biblioteca.prototype.cargarDatos = function () {
+        var _this = this;
+        try {
+            var rutaArchivo = './bd/biblioteca_datos.json';
+            // Verificamos si el archivo existe en la nueva ruta
+            if (fs.existsSync(rutaArchivo)) {
+                var archivo = fs.readFileSync(rutaArchivo, 'utf-8');
+                var datos = JSON.parse(archivo);
+                this.usuarios.clear();
+                this.libros.clear();
+                this.prestamos.clear();
+                datos.usuarios.forEach(function (_a) {
+                    var id = _a[0], u = _a[1];
+                    var usuario = new clases_1.Usuario(u.id, u._nombre, u._email, u.tipo);
+                    usuario.prestamosActivos = u.prestamosActivos;
+                    usuario.fechaRegistro = new Date(u.fechaRegistro);
+                    _this.usuarios.set(id, usuario);
+                });
+                datos.libros.forEach(function (_a) {
+                    var isbn = _a[0], l = _a[1];
+                    var libro = new clases_1.Libro(l.ISBN, l.titulo, l.autor, l.categoria, l.anioPublicacion, l._copiasDisponibles, l.copiasTotales, l.estado);
+                    libro.colaReservas = l.colaReservas || [];
+                    _this.libros.set(isbn, libro);
+                });
+                datos.prestamos.forEach(function (_a) {
+                    var id = _a[0], p = _a[1];
+                    var usuario = _this.usuarios.get(p.usuario.id);
+                    var libro = _this.libros.get(p.libro.ISBN);
+                    var prestamo = new clases_1.Prestamo(p.idPrestamo, usuario, libro);
+                    prestamo.fechaPrestamo = new Date(p.fechaPrestamo);
+                    prestamo.fechaDevolucion = new Date(p.fechaDevolucion);
+                    prestamo.fechaRealDevolucion = new Date(p.fechaRealDevolucion);
+                    prestamo._estado = p._estado;
+                    _this.prestamos.set(id, prestamo);
+                });
+                this.contadorPrestamos = datos.contadorPrestamos;
+                console.log(" \u00C9XITO: Datos cargados correctamente desde '".concat(rutaArchivo, "'\n"));
+            }
+            else {
+                console.log(" No se encontró base de datos previa. Iniciando sistema en blanco.\n");
+            }
+        }
+        catch (error) {
+            console.error(" Error al cargar los datos:", error);
+        }
     };
     return Biblioteca;
 }());
