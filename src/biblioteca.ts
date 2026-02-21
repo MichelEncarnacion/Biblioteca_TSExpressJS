@@ -212,7 +212,7 @@ export class Biblioteca {
         if (ordenados.length === 0) return reporte + "No hay datos de préstamos aún.\n";
 
         ordenados.forEach(([isbn, cantidad], index) => {
-            const libro = this.libros.get(isbn)!; // Ahora sí buscará correctamente por ISBN
+            const libro = this.libros.get(isbn)!;
             reporte += `${index + 1}. [${libro.categoria}] ${libro.titulo} de ${libro.autor} - ${cantidad} préstamos\n`;
         });
 
