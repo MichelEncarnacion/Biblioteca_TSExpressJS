@@ -240,9 +240,9 @@ export class Prestamo implements IPrestamo {
 
     obtenerInformacion(): string {
         const retraso = this.diasRetraso();
-        let info = `📋 Préstamo #${this.idPrestamo} | ${this.usuario.nombre} -> ${this.libro.titulo} | Estado: ${this.estado}`;
+        let info = ` Préstamo #${this.idPrestamo} | ${this.usuario.nombre} -> ${this.libro.titulo} | Estado: ${this.estado}`;
         if (retraso > 0 && this.estado !== EstadoPrestamo.Devuelto) {
-            info += ` | ⚠️ Retraso: ${retraso} días | Multa acumulada: $${this.calcularMulta()}`;
+            info += ` |  Retraso: ${retraso} días | Multa acumulada: $${this.calcularMulta()}`;
         }
         return info;
     }
