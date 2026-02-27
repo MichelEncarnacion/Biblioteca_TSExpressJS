@@ -1,0 +1,54 @@
+{{> header title="Catálogo de Libros" }}
+
+<div class="hero-section">
+    <h1>Bienvenido a <span>{{nombreBiblioteca}}</span></h1>
+    <p>Explora nuestro extenso catálogo, pide prestado libros y expande tu mente a través de nuevas lecturas.</p>
+</div>
+
+<section class="catalog-section">
+    <div class="catalog-header">
+        <h2>Catálogo de Libros</h2>
+        <div class="search-bar">
+            <ion-icon name="search-outline"></ion-icon>
+            <input type="text" placeholder="Buscar por título o autor...">
+        </div>
+    </div>
+
+    <div class="books-grid">
+        {{#each libros}}
+        <div class="book-card">
+            <div class="book-cover">
+                {{#if (eq categoria "Ficcion")}}
+                <div class="category-badge {{categoria}}"><ion-icon name="planet"></ion-icon> Ficción</div>
+                {{else}}
+                <div class="category-badge {{categoria}}"><ion-icon name="book"></ion-icon> {{categoria}}</div>
+                {{/if}}
+            </div>
+            <div class="book-info">
+                <h3>{{titulo}}</h3>
+                <p class="author">por <strong>{{autor}}</strong></p>
+                <div class="book-stats">
+                    <span class="status {{#if (eq estado 0)}}available{{else}}unavailable{{/if}}">
+                        <ion-icon name="{{#if (eq estado 0)}}checkmark-circle{{else}}close-circle{{/if}}"></ion-icon>
+                        {{#if (eq estado 0)}}Disponible{{else}}No Disponible{{/if}}
+                    </span>
+                    <span class="copies">
+                        <ion-icon name="copy-outline"></ion-icon> {{_copiasDisponibles}} / {{copiasTotales}}
+                    </span>
+                </div>
+                <button class="action-btn" {{#if (eq estado 0)}}onclick="window.location.href='/prestamos'"
+                    {{else}}disabled{{/if}}>
+                    {{#if (eq estado 0)}}Solicitar Préstamo{{else}}Añadir a Reservas{{/if}}
+                </button>
+            </div>
+        </div>
+        {{else}}
+        <div class="empty-state">
+            <ion-icon name="sad-outline"></ion-icon>
+            <p>No se encontraron libros en este momento.</p>
+        </div>
+        {{/each}}
+    </div>
+</section>
+
+{{> footer }}

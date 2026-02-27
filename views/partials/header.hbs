@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{#if title}}{{title}} - {{/if}}Biblioteca Central</title>
+    <!-- Modern Sans-serif Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Ionicons for some flair -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <ion-icon name="library"></ion-icon>
+                <span>Biblioteca Central</span>
+            </div>
+            <nav class="nav-links">
+                <a href="/" class="active">Catálogo</a>
+                <a href="/prestamos">Préstamos</a>
+                <a href="/stats">Estadísticas</a>
+                <a href="/admin" style="color: var(--primary);"><ion-icon name="construct"
+                        style="vertical-align: middle;"></ion-icon> Admin</a>
+            </nav>
+            <div class="profile-btn">
+                <ion-icon name="person-circle"></ion-icon>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper injected by index.hbs -->
+    <main class="container page-content">

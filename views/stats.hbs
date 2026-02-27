@@ -1,0 +1,105 @@
+{{> header title="Estadísticas" }}
+
+<div class="hero-section">
+    <h1>Estadísticas de <span>{{nombreBiblioteca}}</span></h1>
+    <p>Monitoriza en tiempo real el uso, inventario y tendencias de nuestra plataforma de lectura.</p>
+</div>
+
+<!-- Key Metrics Cards -->
+<section class="forms-wrapper" style="margin-bottom: 2rem;">
+    <!-- General Metrics -->
+    <div class="card-panel stats-card">
+        <div class="card-header highlight-header">
+            <h3><ion-icon name="analytics-outline"></ion-icon> Resumen General</h3>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-value">{{totalUsuarios}}</span>
+                <span class="stat-label">Usuarios Registrados</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{totalLibros}}</span>
+                <span class="stat-label">Títulos Únicos</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{totalPrestamos}}</span>
+                <span class="stat-label">Préstamos Históricos</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Health -->
+    <div class="card-panel stats-card">
+        <div class="card-header secondary-header">
+            <h3><ion-icon name="library-outline"></ion-icon> Estado del Inventario</h3>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-value text-success">{{copiasDisponibles}}</span>
+                <span class="stat-label">Copias Libres</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value text-primary">{{copiasPrestadas}}</span>
+                <span class="stat-label">En Préstamo</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value text-warning">{{tasaDeUso}}%</span>
+                <span class="stat-label">Tasa de Uso</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Detailed Breakdown -->
+<section class="data-section" style="margin-bottom: 4rem;">
+    <div class="catalog-header">
+        <h2>Desglose Detallado</h2>
+    </div>
+
+    <div class="breakdown-container">
+        <!-- Demographics -->
+        <div class="card-panel">
+            <div class="card-header">
+                <h3><ion-icon name="people-outline"></ion-icon> Demografía de Usuarios</h3>
+            </div>
+            <div class="list-group">
+                <div class="list-item">
+                    <span>Estudiantes</span>
+                    <strong>{{usuariosPorTipo.[0]}}</strong>
+                </div>
+                <div class="list-item">
+                    <span>Profesores</span>
+                    <strong>{{usuariosPorTipo.[1]}}</strong>
+                </div>
+                <div class="list-item">
+                    <span>Administradores</span>
+                    <strong>{{usuariosPorTipo.[2]}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Status -->
+        <div class="card-panel">
+            <div class="card-header">
+                <h3><ion-icon name="sync-outline"></ion-icon> Ciclo de Préstamos</h3>
+            </div>
+            <div class="list-group">
+                <div class="list-item">
+                    <span class="status-dot active"></span> <span>Activos (En lectura)</span>
+                    <strong>{{prestamosPorEstado.[0]}}</strong>
+                </div>
+                <div class="list-item">
+                    <span class="status-dot returned"></span> <span>Devueltos (Archivo)</span>
+                    <strong>{{prestamosPorEstado.[1]}}</strong>
+                </div>
+                <div class="list-item">
+                    <span class="status-dot overdue"></span> <span>Vencidos (Irregulares)</span>
+                    <strong class="text-danger">{{prestamosPorEstado.[2]}}</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{{> footer }}

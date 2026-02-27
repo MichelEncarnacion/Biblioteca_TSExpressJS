@@ -1,0 +1,78 @@
+{{> header title="Panel de Administración" }}
+
+<div class="hero-section">
+    <h1>Panel de <span>Administración</span></h1>
+    <p>Agrega nuevos ejemplares al catálogo de la biblioteca y actualiza el inventario general.</p>
+</div>
+
+{{#if mensaje}}
+<div class="alert success-alert">
+    <ion-icon name="checkmark-circle"></ion-icon>
+    {{mensaje}}
+</div>
+{{/if}}
+
+{{#if error}}
+<div class="alert error-alert">
+    <ion-icon name="alert-circle"></ion-icon>
+    {{error}}
+</div>
+{{/if}}
+
+<section class="forms-wrapper">
+    <!-- Registrar Nuevo Libro -->
+    <div class="card-panel flex-grow">
+        <div class="card-header highlight-header">
+            <h3><ion-icon name="book-outline"></ion-icon> Añadir Nuevo Título al Catálogo</h3>
+        </div>
+        <form action="/admin/libros" method="POST" class="std-form">
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                    <label for="ISBN">ISBN</label>
+                    <input type="text" id="ISBN" name="ISBN" placeholder="Ej: 978-0134685991" required>
+                </div>
+                <div class="form-group" style="flex: 2; min-width: 200px;">
+                    <label for="titulo">Título del Libro</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Ej: Effective Java" required>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 2; min-width: 200px;">
+                    <label for="autor">Autor(es)</label>
+                    <input type="text" id="autor" name="autor" placeholder="Ej: Joshua Bloch" required>
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 150px;">
+                    <label for="anioPublicacion">Año de Pub.</label>
+                    <input type="number" id="anioPublicacion" name="anioPublicacion" placeholder="Ej: 2017" required>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 2; min-width: 200px;">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="0">Ciencia</option>
+                        <option value="1">Ficción</option>
+                        <option value="2">Historia</option>
+                        <option value="3">Literatura</option>
+                        <option value="4" selected>Tecnología</option>
+                        <option value="5">Arte</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 150px;">
+                    <label for="copiasTotales">Nº de Copias</label>
+                    <input type="number" id="copiasTotales" name="copiasTotales" value="1" min="1" required>
+                </div>
+            </div>
+
+            <button type="submit" class="action-btn" style="margin-top: 1rem;">
+                <ion-icon name="save-outline" style="vertical-align: middle; margin-right: 5px;"></ion-icon> Guardar en
+                Base de Datos
+            </button>
+        </form>
+    </div>
+</section>
+
+{{> footer }}

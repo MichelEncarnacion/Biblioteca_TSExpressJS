@@ -1,0 +1,130 @@
+{{> header title="Gestión de Préstamos" }}
+
+<div class="hero-section">
+    <h1>Gestión de <span>Préstamos</span></h1>
+    <p>Administra los usuarios y los movimientos del inventario de la biblioteca central a través de nuestro panel
+        interactivo.</p>
+</div>
+
+<!-- Forms Section -->
+<section class="forms-wrapper">
+    <!-- Crear Usuario -->
+    <div class="card-panel">
+        <div class="card-header">
+            <h3><ion-icon name="person-add-outline"></ion-icon> Nuevo Usuario</h3>
+        </div>
+        <form action="/usuarios" method="POST" class="std-form">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Ej: Maria Lopez">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="maria@ejemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="tipo">Tipo de Usuario (0:Est., 1:Prof., 2:Admin)</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="0">Estudiante</option>
+                    <option value="1">Profesor</option>
+                    <option value="2">Administrador</option>
+                </select>
+            </div>
+            <button type="submit" class="action-btn success-btn">Registrar Usuario</button>
+        </form>
+    </div>
+
+    <!-- Realizar Préstamo -->
+    <div class="card-panel">
+        <div class="card-header">
+            <h3><ion-icon name="book-outline"></ion-icon> Realizar Préstamo</h3>
+        </div>
+        <form action="/prestamos/realizar" method="POST" class="std-form">
+            <div class="form-group">
+                <label for="idUsuario">Usuario (Selecciona ID)</label>
+                <select id="idUsuario" name="idUsuario" required>
+                    {{#each usuarios}}
+                    <option value="{{id}}">{{id}} - {{nombre}} ({{#if (eq tipo 0)}}Est.{{else if (eq tipo
+                        1)}}Prof.{{else}}Admin{{/if}})</option>
+                    {{else}}
+                    <option disabled>No hay usuarios registrados.</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ISBN">Libro Disponible (ISBN)</label>
+                <select id="ISBN" name="ISBN" required>
+                    {{#each librosDisponibles}}
+                    <option value="{{ISBN}}">{{ISBN}} - {{titulo}} ({{_copiasDisponibles}} disponibles)</option>
+                    {{else}}
+                    <option disabled>No hay libros disponibles.</option>
+                    {{/each}}
+                </select>
+            </div>
+            <button type="submit" class="action-btn primary-btn">Prestar Libro</button>
+        </form>
+    </div>
+</section>
+
+<!-- Active Loans Data Table -->
+<section class="data-section">
+    <div class="catalog-header">
+        <h2>Préstamos Activos</h2>
+    </div>
+
+    <div class="table-container">
+        {{#if prestamos}}
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Libro</th>
+                    <th>Usuario</th>
+                    <th>Emisión</th>
+                    <th>Vencimiento</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each prestamos}}
+                <tr>
+                    <td>#{{idPrestamo}}</td>
+                    <td><strong>{{libro.titulo}}</strong></td>
+                    <td>{{usuario.nombre}}</td>
+                    <td>{{fechaPrestamo}}</td>
+                    <td><span class="badget-warning">{{fechaDevolucion}}</span></td>
+                    <td>
+                        <form action="/prestamos/devolver" method="POST" style="margin:0;">
+                            <input type="hidden" name="idPrestamo" value="{{idPrestamo}}">
+                            <button type="submit" class="action-btn sm return-btn">
+                                Devolver
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="empty-state">
+            <ion-icon name="file-tray-outline"></ion-icon>
+            <p>No hay préstamos activos en este momento.</p>
+        </div>
+        {{/if}}
+    </div>
+</section>
+
+<!-- Error / Success Alerts Logic -->
+{{#if mensaje}}
+<div class="alert success-alert">
+    <ion-icon name="checkmark-circle"></ion-icon> {{mensaje}}
+</div>
+{{/if}}
+
+{{#if error}}
+<div class="alert error-alert">
+    <ion-icon name="warning"></ion-icon> {{error}}
+</div>
+{{/if}}
+
+{{> footer }}

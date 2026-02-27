@@ -1,0 +1,49 @@
+{
+  "usuarios": [],
+  "libros": [
+    [
+      "978-0132350884",
+      {
+        "colaReservas": [],
+        "titulo": "Clean Code",
+        "autor": "Robert C. Martin",
+        "anioPublicacion": 2008,
+        "_copiasDisponibles": 5,
+        "copiasTotales": 5,
+        "estado": 0,
+        "ISBN": "978-0132350884",
+        "categoria": 4
+      }
+    ],
+    [
+      "978-8420651323",
+      {
+        "colaReservas": [],
+        "titulo": "El Principito",
+        "autor": "Antoine de Saint-Exupéry",
+        "anioPublicacion": 1943,
+        "_copiasDisponibles": 10,
+        "copiasTotales": 10,
+        "estado": 0,
+        "ISBN": "978-8420651323",
+        "categoria": 3
+      }
+    ],
+    [
+      "978-8498387070",
+      {
+        "colaReservas": [],
+        "titulo": "Harry Potter y la piedra filosofal",
+        "autor": "J.K. Rowling",
+        "anioPublicacion": 1997,
+        "_copiasDisponibles": 3,
+        "copiasTotales": 3,
+        "estado": 0,
+        "ISBN": "978-8498387070",
+        "categoria": 1
+      }
+    ]
+  ],
+  "prestamos": [],
+  "contadorPrestamos": 1
+}
