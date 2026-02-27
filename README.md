@@ -1,25 +1,27 @@
-# Sistema de Gestión de Biblioteca Digital 📚
+# Library Management System (LMS) — TypeScript & Express 📚
 
-Este proyecto es una implementación robusta en **TypeScript** diseñada para gestionar una biblioteca digital, aplicando principios avanzados de Programación Orientada a Objetos (POO) y tipado estático.
+Implementación técnica de un sistema de gestión bibliotecaria basado en Programación Orientada a Objetos (POO). Este proyecto se centra en la eficiencia de búsqueda y la integridad de datos mediante el uso de tipos estrictos y estructuras de datos avanzadas en el entorno **Node.js**.
 
-## 🎯 Objetivos del Proyecto
+## 🚀 Características Técnicas
 
-- **Fundamentos de TypeScript:** Uso de tipos de datos, interfaces y clases.
-- **Arquitectura:** Aplicación de conceptos de POO (Herencia, Encapsulamiento, Polimorfismo).
-- **Sintaxis Avanzada:** Implementación de funcionalidades modernas de TypeScript para un sistema funcional.
+* **Arquitectura de Datos:** Uso de `Map<string, T>` y `Map<number, T>` para garantizar búsquedas, inserciones y eliminaciones con complejidad constante $O(1)$ en memoria.
+* **Domain-Driven Logic:** Clases robustas (`Usuario`, `Libro`, `Prestamo`) con encapsulamiento estricto y validaciones mediante *getters/setters*.
+* **Type Safety:** Implementación exhaustiva de interfaces y tipos personalizados para asegurar la consistencia de los modelos a través de toda la aplicación.
+* **Motor de Vistas Dinámico:** Integración de **Handlebars (HBS)** para el renderizado del lado del servidor (SSR), permitiendo interfaces interactivas.
+* **API RESTful:** Endpoints optimizados para el registro de entidades, filtrado avanzado por autor/categoría y generación de estadísticas agregadas.
 
-## 🚀 Tecnologías Utilizadas
+## 🛠️ Tecnologías Utilizadas
 
-- **Lenguaje:** TypeScript
-- **Entorno:** Node.js
-- **Configuración:** `tsconfig.json` personalizado para generación de tipos y transpilación.
+* **Lenguaje:** TypeScript 5.x
+* **Framework Web:** Express.js
+* **Motor de Plantillas:** Handlebars (HBS)
+* **Entorno de Ejecución:** Node.js (con `ts-node` y `nodemon` para desarrollo)
 
-## 🛠️ Instalación y Configuración
+## 📦 Instalación y Configuración
 
 1.  **Clonar el repositorio:**
-
     ```bash
-    git clone <url-del-repositorio>
+    git clone <url-del-nuevo-repositorio>
     cd <nombre-de-la-carpeta>
     ```
 
@@ -28,46 +30,9 @@ Este proyecto es una implementación robusta en **TypeScript** diseñada para ge
     npm install
     ```
 
-## ▶️ Cómo Ejecutar el Programa
+## ▶️ Cómo Ejecutar el Proyecto
 
-### Opción 1 — Compilar y ejecutar (recomendado)
-
-Compila todos los archivos TypeScript de `src/` a `dist/` usando la configuración de `tsconfig.json`:
-
+### **Modo Desarrollo (Recomendado)**
+Utiliza `nodemon` y `ts-node` para reiniciar el servidor automáticamente tras cada cambio:
 ```bash
-tsc
-```
-
-Luego ejecuta el programa compilado con Node.js:
-
-```bash
-node dist/main.js
-```
-
-### Opción 2 — Compilar un archivo específico
-
-Si sólo quieres compilar `main.ts` de forma directa (sin usar `tsconfig.json`):
-
-```bash
-tsc src/main.ts --strict
-```
-
-Esto genera `main.js` junto a los demás archivos fuera de `dist/`. Se recomienda la Opción 1 para mantener la estructura del proyecto.
-
-## 📂 Estructura del Proyecto
-
-```
-Libreria/
-├── src/
-│   ├── interfaces.ts   # Enums e interfaces (IUsuario, ILibro, IPrestamo)
-│   ├── clases.ts       # Clases concretas (Usuario, Libro, Prestamo)
-│   ├── biblioteca.ts   # Clase Biblioteca (lógica de negocio y reportes)
-│   └── main.ts         # Punto de entrada — demo del sistema
-├── dist/               # Código JavaScript compilado (generado tras tsc)
-├── tsconfig.json       # Configuración del compilador de TypeScript
-└── package.json        # Definición de dependencias
-```
-
-## 📝 Licencia
-
-Este proyecto es de uso educativo y privado.
+npm run dev
