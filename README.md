@@ -23,3 +23,8 @@ Implementación técnica de un sistema de gestión bibliotecaria basado en Progr
    ```bash
    git clone <url-del-nuevo-repositorio>
    cd <nombre-de-la-carpeta>
+
+Instalar dependencias:
+
+Bash
+npm install
